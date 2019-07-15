@@ -12,13 +12,14 @@ export class PhotosService {
     ) { }
 
     async getPhotos():Promise<Array<photos>> { 
-        return await this.photosRepo.find({ relations: ['user', 'commentss']}); 
+        return await this.photosRepo.find({ relations: ['user','tagss' ,'commentss']});
     }
 
     async getPhotosWithQueryBuilder(): Promise<any>{
         return this.photosRepo
             .createQueryBuilder()
             .innerJoinAndSelect('photos.user', 'user')
+            .innerJoinAndSelect('photos.tagss', 'tags')
             .innerJoinAndSelect('photos.commentss', 'comments')
             .innerJoinAndSelect('comments.user', 'comment_author')
             .orderBy({ 'photos.id': 'DESC' })
@@ -29,6 +30,11 @@ export class PhotosService {
         const newPhoto = await this.photosRepo.create(photo);
         const user = await this.usersRepo.findOne(user_id);
         newPhoto.user = user;
+        return this.photosRepo.save(newPhoto);
+    }
+
+    async createPhoto2(photo: photos): Promise<photos> {
+        const newPhoto = await this.photosRepo.create(photo);
         return this.photosRepo.save(newPhoto);
     }
     

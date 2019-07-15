@@ -15,9 +15,9 @@ import { CommentsModule } from './comments/comments.module';
     TypeOrmModule.forRoot({
         type: 'mysql',
         host: 'localhost',
-        port: 3307,
+        port: 3306,
         username: 'root',
-        password: '',
+        password: 'password',
         database: 'ig_clone',
         entities: [join(__dirname, '**/**.entity{.ts,.js}')],
         synchronize: false

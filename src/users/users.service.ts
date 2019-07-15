@@ -30,7 +30,8 @@ export class UsersService {
   async findUserById(id: number) {
     return this.usersRepo
       .createQueryBuilder()
-      .where("id = :id", { id })
+      .where('users.id = :id', { id })
+      .innerJoinAndSelect('users.photoss', 'photos')
       .getOne();
     return this.usersRepo.findOne(id, {
       relations:['photoss']
@@ -41,7 +42,7 @@ export class UsersService {
     return this.usersRepo.delete(id);
   }
 
-  async updateUser(user: Users, id:number) {
-    return this.usersRepo.update({ id }, user)
+  async updateUser(user: Users, id: number) {
+    return this.usersRepo.update({ id }, user);
   }
 }
