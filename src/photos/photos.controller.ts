@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { photos } from './photos.entity';
 import { PhotosService } from './photos.service';
 
@@ -10,6 +10,12 @@ export class PhotosController {
 
     @Get()
     async getPhotos(): Promise<Array<photos>> { 
-        return await this.photosService.getPhotos();
+        return await this.photosService.getPhotosWithQueryBuilder();
     }
+
+    @Post()
+    async createPhoto(@Body() body: {photo: photos, user_id: number}): Promise<photos>{
+        return await this.photosService.createPhoto(body.photo, body.user_id);
+    }
+
 }

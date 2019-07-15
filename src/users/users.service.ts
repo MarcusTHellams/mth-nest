@@ -2,6 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { users as Users } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UsersService {
@@ -9,16 +14,34 @@ export class UsersService {
     @InjectRepository(Users) private readonly usersRepo: Repository<Users>,
   ) {}
 
-  async findAll(): Promise<Users[]> {
-    return await this.usersRepo.find();
+  async findAll(options: IPaginationOptions): Promise<Pagination<Users>> {
+    return await paginate<Users>(this.usersRepo, options, {
+      relations: ['photoss'],
+      order: { username: 'DESC' },
+    });
   }
 
-  async getUsersAndPhotos() {
-      return await this.usersRepo
-          .createQueryBuilder()
-          .select()
-          .innerJoinAndSelect('users.photoss', 'photos')
-          .orderBy('username', 'DESC')
-          .getMany();
+
+  async createUser(user: Users) {
+    const newUser = this.usersRepo.create(user)
+    return this.usersRepo.save(newUser);
+  }
+
+  async findUserById(id: number) {
+    return this.usersRepo
+      .createQueryBuilder()
+      .where("id = :id", { id })
+      .getOne();
+    return this.usersRepo.findOne(id, {
+      relations:['photoss']
+    });
+  }
+
+  async deleteUserById(id: number) {
+    return this.usersRepo.delete(id);
+  }
+
+  async updateUser(user: Users) {
+    
   }
 }
