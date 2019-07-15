@@ -24,11 +24,11 @@ export class UsersService {
 
   async createUser(user: Users) {
     const newUser = this.usersRepo.create(user)
-    return this.usersRepo.save(newUser);
+    return await this.usersRepo.save(newUser);
   }
 
   async findUserById(id: number) {
-    return this.usersRepo
+    return await this.usersRepo
       .createQueryBuilder()
       .where('users.id = :id', { id })
       .innerJoinAndSelect('users.photoss', 'photos')
@@ -39,10 +39,10 @@ export class UsersService {
   }
 
   async deleteUserById(id: number) {
-    return this.usersRepo.delete(id);
+    return await this.usersRepo.delete(id);
   }
 
   async updateUser(user: Users, id: number) {
-    return this.usersRepo.update({ id }, user);
+    return await this.usersRepo.update({ id }, user);
   }
 }

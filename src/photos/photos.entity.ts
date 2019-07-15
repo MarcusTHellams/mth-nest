@@ -3,19 +3,21 @@ import { users } from "../users/users.entity";
 import { comments } from "../comments/comments.entity";
 import { likes } from "../likes/likes.entity";
 import { tags } from "../tags/tags.entity";
+import { ApiModelProperty } from '@nestjs/swagger';
+
 
 
 @Entity("photos", { schema: "ig_clone" })
 @Index("user_id", ["user",])
 export class photos {
-
+    @ApiModelProperty()
     @PrimaryGeneratedColumn({
         type: "int",
         name: "id"
     })
     id: number;
 
-
+    @ApiModelProperty()
     @Column("varchar", {
         nullable: false,
         name: "image_url"

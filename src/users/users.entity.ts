@@ -3,19 +3,21 @@ import {comments} from "../comments/comments.entity";
 import {follows} from "../follows/follows.entity";
 import {likes} from "../likes/likes.entity";
 import {photos} from "../photos/photos.entity";
+import { ApiModelProperty } from '@nestjs/swagger';
+
 
 
 @Entity("users",{schema:"ig_clone" } )
 @Index("username",["username",],{unique:true})
 export class users {
-
+    @ApiModelProperty()
     @PrimaryGeneratedColumn({
         type:"int", 
         name:"id"
         })
     id:number;
         
-
+    @ApiModelProperty()
     @Column("varchar",{ 
         nullable:false,
         unique: true,
@@ -23,7 +25,6 @@ export class users {
         })
     username:string;
         
-
     @Column("timestamp",{ 
         nullable:false,
         default: () => "CURRENT_TIMESTAMP",
