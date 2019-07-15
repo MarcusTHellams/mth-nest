@@ -30,5 +30,6 @@ export class PhotosService {
         const user = await this.usersRepo.findOne(user_id);
         newPhoto.user = user;
         return this.photosRepo.save(newPhoto);
-     }
+    }
+    
 }

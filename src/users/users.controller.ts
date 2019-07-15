@@ -7,7 +7,8 @@ import {
   Post,
   Body,
   Param,
-  Delete,
+    Delete,
+  Put
 } from '@nestjs/common';
 
 @Controller('users')
@@ -38,4 +39,9 @@ export class UsersController {
   async deleteUserById(@Param('id') id: number) {
     return this.usersService.deleteUserById(id);
   }
+    
+    @Put('/:id')
+    async updateUser(@Body() user:Users, @Param('id') id:number){
+        return this.usersService.updateUser(user, id);
+    }
 }
